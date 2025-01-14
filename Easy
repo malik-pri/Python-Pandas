@@ -1,1 +1,23 @@
 ** STRATASCRATCH**
+
+1. Calculate the average score for each project, but only include projects where more than one team member has provided a score.
+Your output should include the project ID and the calculated average score for each qualifying project.
+
+# Import your libraries
+import pandas as pd
+
+# Start writing code
+project_data.head()
+
+grouped = project_data.groupby('project_id')
+
+# Counting rows in each group
+filtered_data = grouped.filter(lambda x: len(x)>1) 
+
+# Reset index to get project_id as column rather than index
+average_score = filtered_data.groupby('project_id')['score'].mean().reset_index()
+
+# Change column name
+average_score = average_score.rename(columns={'score':'average_score'})
+
+2. 
