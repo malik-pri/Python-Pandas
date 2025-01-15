@@ -20,4 +20,42 @@ average_score = filtered_data.groupby('project_id')['score'].mean().reset_index(
 # Change column name
 average_score = average_score.rename(columns={'score':'average_score'})
 
-2. 
+2. For each week, find the total quantity across all orders of that week. Include only the orders that are from the first quarter of 2023.
+The output should contain 'week' and 'quantity'.
+
+import pandas as pd
+sales_data.head()
+sales_data.dtypes
+
+# grouped = sales_data[(sales_data.sales_date.dt.month == 1) & (sales_data.sales_date.dt.year == 2024)].groupby('product_category')
+# grouped.apply(lambda x:x.nlargest(3, 'total_sales', keep='all')).reset_index(drop=True)
+
+## Alternative Using Function
+def top_sales(df: pd.DataFrame) -> pd.DataFrame:
+    return( df
+            .query("(sales_date.dt.month == 1) & (sales_date.dt.year==2024)")
+            .groupby('product_category', as_index=False)
+            .apply(lambda x: x.nlargest(3, 'total_sales', keep='all'))
+            .reset_index(drop=True)
+            )
+# Apply the function on sales_data
+top_sales_data = top_sales(df=sales_data)
+
+3. You are provided with an already aggregated dataset from Amazon that contains detailed information about sales across different products and marketplaces. Your task is to list the top 3 sellers in each 
+product category for January. (In case of ties, rank them the same and include all sellers tied for that position.)
+
+grouped = user_activity.groupby('device_type').apply(lambda x: x.nlargest(1, 'user_count', keep='all')).reset_index(drop=True)
+grouped['time_period'] = grouped['start_timestamp'].astype(str)+' to '+grouped['end_timestamp'].astype(str)
+result = grouped[['user_count', 'time_period','device_type']]
+
+4. You are given a dataset from Amazon that tracks and aggregates user activity on their platform in certain time periods. For each device type, find the time period with the highest number of active users.
+
+grouped = user_activity.groupby('device_type').apply(lambda x: x.nlargest(1, 'user_count', keep='all')).reset_index(drop=True)
+grouped['time_period'] = grouped['start_timestamp'].astype(str)+' to '+grouped['end_timestamp'].astype(str)
+result = grouped[['user_count', 'time_period','device_type']]
+
+5. As a data scientist at Amazon Prime Video, you are tasked with enhancing the in-flight entertainment experience for Amazon’s airline partners. Your challenge is to develop a feature that suggests individual movies 
+from Amazon's content database that fit within a given flight's duration. For flight 101, find movies whose runtime is less than or equal to the flight's duration.
+The output should list suggested movies for the flight, including 'flight_id', 'movie_id', and 'movie_duration'."
+
+
