@@ -58,4 +58,7 @@ result = grouped[['user_count', 'time_period','device_type']]
 from Amazon's content database that fit within a given flight's duration. For flight 101, find movies whose runtime is less than or equal to the flight's duration.
 The output should list suggested movies for the flight, including 'flight_id', 'movie_id', and 'movie_duration'."
 
+merged = pd.merge(left= flight_schedule, right= entertainment_catalog, how='cross')
+merged = merged[(merged.flight_duration >= merged.duration) & (merged.flight_id == 101)]
+merged[['flight_id', 'movie_id', 'duration']]
 
