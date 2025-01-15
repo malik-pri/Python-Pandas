@@ -62,3 +62,13 @@ merged = pd.merge(left= flight_schedule, right= entertainment_catalog, how='cros
 merged = merged[(merged.flight_duration >= merged.duration) & (merged.flight_id == 101)]
 merged[['flight_id', 'movie_id', 'duration']]
 
+## Alternative Using Function
+def movie_rec(c : pd.DataFrame, s: pd.DataFrame) -> pd.DataFrame:
+    return (pd
+            .merge(left=s , right=c, how='cross')
+            .query("flight_id.eq(101) & flight_duration.ge(duration)")
+            .filter(['flight_id', 'movie_id', 'duration'])
+            )
+            
+movie_rec(c=entertainment_catalog, s=flight_schedule)
+
