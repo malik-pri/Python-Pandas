@@ -85,4 +85,9 @@ The owner wants to know how many customers received that discount since they sta
 result = customers[(customers.age > 65) | (customers.total_purchase > 200)]
 result.customer_id.count()
 
-9. 
+9. Write a query that returns all of the stores whose average yearly revenue is greater than one million dollars. Output the store ID and average revenue. Round the average to 2 decimal places.
+
+result = stores.groupby('store_id')['revenue'].mean().reset_index().rename(columns={'revenue':'avg_rev'}).round(2)
+result[result.avg_rev>1000000]
+
+10. 
