@@ -79,3 +79,10 @@ fact_events.groupby([fact_events.client_id, fact_events.time_id.dt.month])['user
 7. Write a query that will calculate the number of shipments per month. The unique key for one shipment is a combination of shipment_id and sub_id. 
 Output the year_month in the format YYYY-MM and the number of shipments for that month.
 
+8. A computer store offers a 25% discount to all new customers over the age of 65 or customers who spend more than $200 on their first purchase.
+The owner wants to know how many customers received that discount since they started the promotion. Write a query to see how many customers received that discount.
+
+result = customers[(customers.age > 65) | (customers.total_purchase > 200)]
+result.customer_id.count()
+
+9. 
