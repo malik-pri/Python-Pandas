@@ -72,3 +72,10 @@ def movie_rec(c : pd.DataFrame, s: pd.DataFrame) -> pd.DataFrame:
             
 movie_rec(c=entertainment_catalog, s=flight_schedule)
 
+6. Write a query that returns the number of unique users per client per month
+
+fact_events.groupby([fact_events.client_id, fact_events.time_id.dt.month])['user_id'].nunique().reset_index()
+
+7. Write a query that will calculate the number of shipments per month. The unique key for one shipment is a combination of shipment_id and sub_id. 
+Output the year_month in the format YYYY-MM and the number of shipments for that month.
+
