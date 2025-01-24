@@ -109,3 +109,27 @@ df['ship_period'] = df.shipment_date.dt.to_period('M')
 df['unique_key'] = df.shipment_id.astype(str) +'_'+ df.sub_id.astype(str)
 df.groupby('ship_period')['unique_key'].nunique().reset_index().rename(columns={'unique_key':'count'})
 
+12. Write a query to find the weight for each shipment's earliest shipment date. Output the shipment id along with the weight.
+
+amazon_shipment.groupby(by=['shipment_id'],as_index=False).first()[['shipment_id','weight']]
+
+13. Calculate the total weight for each shipment and add it as a new column. Your output needs to have all the existing rows and columns in addition to the  new column that shows the total weight for each shipment. 
+One shipment can have multiple rows.
+
+df = amazon_shipment.groupby('shipment_id')['weight'].sum().to_frame('total_weight').reset_index()
+amazon_shipment.merge(df, on='shipment_id' , how='left')
+-or-
+amazon_shipment.assign(total_weight=amazon_shipment.groupby(by='shipment_id')['weight'].transform('sum'))
+
+14. Write a query to return all Customers (cust_id) who are violating primary key constraints in the Customer Dimension (dim_customer) i.e. those Customers who are present more than once in the Customer Dimension.
+For example if cust_id 'C123' is present thrice then the query should return two columns, value in first should be 'C123', while value in second should be 3.
+
+df = dim_customer.groupby('cust_id').size().to_frame('count').reset_index()
+df[df['count']>1]
+
+15. Write a query to get a list of products that have not had any sales. Output the ID and market name of these products.
+
+merged_df = dim_product.merge(fct_customer_sales, on='prod_sku_id', how='left', indicator=True)
+merged_df[merged_df._merge=='left_only'][['prod_sku_id','market_name']]
+-or-
+dim_product.merge(fct_customer_sales, on='prod_sku_id', how='left').query('order_id.isna()')[['prod_sku_id', 'market_name']]
